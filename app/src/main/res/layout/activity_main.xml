@@ -56,32 +56,23 @@
                 android:orientation="vertical"
                 android:padding="5dp">
 
-
                 <Button
                     android:id="@+id/addSalesperson"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="SalesPersons" />
+                    android:text="@string/salespersons" />
 
                 <Button
-                    android:id="@+id/button"
+                    android:id="@+id/btn_add_sales_record"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Button" />
+                    android:text="@string/btn_add_sales_record" />
 
 
             </LinearLayout>
 
         </ScrollView>
     </LinearLayout>
-
-
-
-
-
-
-
-
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

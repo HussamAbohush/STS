@@ -139,7 +139,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return SalesPersonsArrayList;
     }
 
-    public void addSalesman(String name, int phoneNumber,int region,byte[] image) throws SQLException {
+    public void addSalesperson(String name, String phoneNumber, int region, byte[] image) throws SQLException {
 
         // on below line we are creating a variable for
         // our sqlite database and calling writable method
@@ -165,6 +165,48 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         // database after adding database.
         db.close();
     }
+
+    public void updateSalesperson(int id, String name, String phoneNumber, int region, byte[] image) throws SQLException {
+
+        // Get writable database
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        // Create ContentValues to store new values
+        ContentValues values = new ContentValues();
+        values.put("name", name);
+        values.put("phone_number", phoneNumber);
+        values.put("image", image);
+        values.put("main_region_id", region);
+
+        // Execute update query
+        int rowsAffected = db.update("Salespersons", values, "id = ?", new String[]{String.valueOf(id)});
+
+        // Check if update was successful
+        if (rowsAffected == 0) {
+            throw new SQLException("No salesperson found with ID: " + id);
+        }
+
+        // Close database
+        db.close();
+    }
+    public void deleteSalesperson(int id) throws SQLException {
+
+        // Get writable database
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        // Execute delete query
+        int rowsAffected = db.delete("Salespersons", "id = ?", new String[]{String.valueOf(id)});
+
+        // Check if delete was successful
+        if (rowsAffected == 0) {
+            throw new SQLException("No salesperson found with ID: " + id);
+        }
+
+        // Close database
+        db.close();
+    }
+
+
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("DROP TABLE IF EXISTS Commissions");

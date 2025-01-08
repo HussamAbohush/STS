@@ -52,4 +52,10 @@
     <string name="et_name">Name</string>
     <string name="salesperson_picture">Salesperson Picture</string>
     <string name="b_save">Save</string>
+    <string name="btn_add_sales_record">Add Sales Record</string>
+    <string name="id">ID:</string>
+    <string name="name">Name:</string>
+    <string name="phone_number_">Phone Number:</string>
+    <string name="main_location">Main Location:</string>
+    <string name="_0_syp">0 SYP</string>
 </resources>

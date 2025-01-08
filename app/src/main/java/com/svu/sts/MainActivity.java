@@ -12,7 +12,7 @@ import androidx.core.view.WindowInsetsCompat;
 
 public class MainActivity extends AppCompatActivity {
 
-    Button addSalesperson;
+    Button BAddSalesperson,BAddSales;
     DatabaseHelper db;
 
     @Override
@@ -27,11 +27,16 @@ public class MainActivity extends AppCompatActivity {
         });
         db = new DatabaseHelper(MainActivity.this);
         db.init();
-        addSalesperson = findViewById(R.id.addSalesperson);
-        addSalesperson.setOnClickListener(view -> {
+        BAddSalesperson = findViewById(R.id.addSalesperson);
+        BAddSales = findViewById(R.id.btn_add_sales_record);
+        BAddSalesperson.setOnClickListener(view -> {
             Intent intent = new Intent(getApplicationContext(), SalespersonsActivity.class);
             startActivity(intent);
 
+        });
+        BAddSales.setOnClickListener(v ->{
+            Intent intent = new Intent(getApplicationContext(), ChooseSalespersonActivity.class);
+            startActivity(intent);
         });
 
     }
