@@ -13,6 +13,9 @@
         android:theme="@style/Theme.STS"
         tools:targetApi="34">
         <activity
+            android:name=".CommissionsActivity"
+            android:exported="false" />
+        <activity
             android:name=".ChooseSalespersonActivity"
             android:exported="false" />
         <activity

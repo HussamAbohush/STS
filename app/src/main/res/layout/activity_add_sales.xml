@@ -1,12 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".CreateOrEditSalesPersonActivity">
+<ScrollView
+xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+xmlns:tools="http://schemas.android.com/tools"
+android:id="@+id/main"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+tools:context=".CreateOrEditSalesPersonActivity">
 
+<androidx.constraintlayout.widget.ConstraintLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <!-- Your existing layout code goes here -->
 
     <LinearLayout
         android:id="@+id/linearLayout2"
@@ -21,15 +27,15 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:orientation="horizontal">
 
             <ImageView
                 android:id="@+id/iv_salesperson_pic"
-                android:layout_width="150dp"
-                android:layout_height="150dp"
+                android:layout_width="125dp"
+                android:layout_height="125dp"
                 android:layout_gravity="center"
                 android:layout_marginBottom="15dp"
                 android:contentDescription="@string/salesperson_picture"
@@ -40,11 +46,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
-                android:paddingStart="10dp"
-                android:paddingEnd="10dp">
+                android:layout_marginStart="15dp"
+                >
 
                 <LinearLayout
-                    android:layout_width="150dp"
+                    android:layout_width="175dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:orientation="horizontal">
@@ -59,7 +65,7 @@
                 </LinearLayout>
 
                 <LinearLayout
-                    android:layout_width="150dp"
+                    android:layout_width="175dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:orientation="horizontal">
@@ -75,7 +81,7 @@
                 </LinearLayout>
 
                 <LinearLayout
-                    android:layout_width="150dp"
+                    android:layout_width="175dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:orientation="horizontal">
@@ -91,7 +97,7 @@
                 </LinearLayout>
 
                 <LinearLayout
-                    android:layout_width="150dp"
+                    android:layout_width="175dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:orientation="horizontal">
@@ -111,62 +117,31 @@
 
 
         <LinearLayout
-            android:layout_width="250dp"
-            android:layout_height="match_parent"
+            android:layout_width="match_parent"
+            android:layout_height="120dp"
             android:layout_gravity="center"
             android:layout_marginTop="5dp"
             android:layout_marginBottom="10dp"
             android:orientation="horizontal"
-            android:paddingStart="20dp"
-            android:paddingEnd="20dp">
+            >
 
-            <TextView
-                android:id="@+id/tv_year"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:text="YYYY"
-                android:textSize="20sp"
-                tools:ignore="HardcodedText" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:text="/"
-                android:textSize="20sp"
-                tools:ignore="HardcodedText" />
+            <NumberPicker
+                android:id="@+id/np_year"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="5dp"
+                android:layout_weight="1"/>
 
-            <TextView
-                android:id="@+id/tv_month"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_weight="1"
-                android:text="MM"
-                android:textSize="20sp"
-                tools:ignore="HardcodedText" />
+            <NumberPicker
+                android:id="@+id/np_month"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="5dp"
+                android:layout_weight="1"/>
 
-            <ImageButton
-                android:id="@+id/btn_choose_month"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_weight="1"
-                android:contentDescription="btn"
-                android:textColorHint="#546E7A"
-                app:srcCompat="@drawable/baseline_apps_24"
-                tools:ignore="HardcodedText" />
+
         </LinearLayout>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginBottom="5dp"
-            android:layout_weight="1"
-            android:text="Add Sales "
-            android:textSize="20sp"
-            tools:ignore="HardcodedText" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -309,6 +284,33 @@
             tools:ignore="VisualLintButtonSize" />
 
 
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:textSize="18sp"
+                android:text="Commission:"
+                tools:ignore="HardcodedText,NestedWeights" />
+            <TextView
+                android:id="@+id/tv_commission"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:layout_weight="1"
+                android:text="@string/_0_syp" />
+        </LinearLayout>
+
+
     </LinearLayout>
 
+
 </androidx.constraintlayout.widget.ConstraintLayout>
+
+</ScrollView>

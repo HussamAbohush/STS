@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "sts.db";
@@ -31,7 +32,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String CREATE_TABLE_SALES = "CREATE TABLE Sales (" +
             "id INTEGER PRIMARY KEY AUTOINCREMENT," +
             "salesperson_id INTEGER," +
-            "date DATE," +
+            "date TEXT," +
             "FOREIGN KEY (salesperson_id) REFERENCES Salespersons(id)" +
             ");";
 
@@ -39,7 +40,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             "id INTEGER PRIMARY KEY AUTOINCREMENT," +
             "sale_id INTEGER," +
             "region_id INTEGER," +
-            "amount REAL," +
+            "amount BIGINT ," +
             "FOREIGN KEY (sale_id) REFERENCES Sales(id)," +
             "FOREIGN KEY (region_id) REFERENCES Regions(id)" +
             ");";
@@ -49,9 +50,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             "salesperson_id INTEGER," +
             "month INTEGER," +
             "year INTEGER," +
-            "amount REAL," +
+            "amount BIGINT," +
             "FOREIGN KEY (salesperson_id) REFERENCES Salespersons(id)" +
             ");";
+    private static final String CREATE_SALE_DETAILS_INDEX ="CREATE INDEX idx_sales_salesperson_date ON Sales(salesperson_id, date);";
 
     private static final String INSERT_INIT_DATA = "INSERT INTO Regions (name)" +
             "VALUES " +
@@ -74,12 +76,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(CREATE_TABLE_SALE_DETAILS);
         db.execSQL(CREATE_TABLE_COMMISSIONS);
         db.execSQL(INSERT_INIT_DATA);
+        db.execSQL(CREATE_SALE_DETAILS_INDEX);
     }
     public void init(){
         SQLiteDatabase db = this.getWritableDatabase();
         db.close();
-
     }
+
     public ArrayList<String> getRegions() {
         // on below line we are creating a
         // database for reading our database.
@@ -105,6 +108,201 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         return regionsNamesArrayList;
     }
+    public int getRegionIdByName(String regionName) {
+        // Open the database for reading
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        // Define the query to get the regionId for a given regionName
+        String query = "SELECT id FROM Regions WHERE name = ?";
+
+        // Execute the query
+        Cursor cursor = db.rawQuery(query, new String[]{regionName});
+
+        int regionId = -1; // Default value in case region is not found
+
+        // Check if the cursor contains any data
+        if (cursor != null && cursor.moveToFirst()) {
+            // Extract the regionId from the first row
+            regionId = cursor.getInt(cursor.getColumnIndexOrThrow("id"));
+        }
+
+        // Close the cursor and database
+        cursor.close();
+        db.close();
+
+        // Return the regionId (or -1 if not found)
+        return regionId;
+    }
+
+    public int getSaleId(int salespersonId, int year, int month) throws SQLException {
+        // Create a variable for the SQLite database and call the readable method
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        // Format the date filter as "YYYY-MM"
+        String dateFilter = year + "-" +  month;
+
+        // Define the query to retrieve the sale ID
+        String query = "SELECT id FROM Sales WHERE salesperson_id = ? AND date LIKE ?";
+
+        // Execute the query
+        Cursor cursor = db.rawQuery(query, new String[]{String.valueOf(salespersonId), dateFilter + "%"});
+
+        int saleId = -1; // Default value if no sale is found
+        if (cursor != null && cursor.moveToFirst()) {
+            try {
+                saleId = cursor.getInt(cursor.getColumnIndexOrThrow("id"));
+            } finally {
+                cursor.close();
+            }
+        }
+
+        // Close the database
+        db.close();
+
+        return saleId;
+    }
+    public void updateSaleDetail(int saleId, int regionId, long amount) throws SQLException {
+        // Create a variable for the SQLite database and call the writable method
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        // Create a variable for the ContentValues
+        ContentValues values = new ContentValues();
+
+        // Add the updated values to ContentValues
+        values.put("amount", amount);
+
+        // Define the WHERE clause and arguments
+        String whereClause = "sale_id = ? AND region_id = ?";
+        String[] whereArgs = {String.valueOf(saleId), String.valueOf(regionId)};
+
+        // Execute the update on the Sale_Details table
+        int rowsAffected = db.update("Sale_Details", values, whereClause, whereArgs);
+
+        // If no rows were updated, insert a new record
+        if (rowsAffected == 0) {
+            values.put("sale_id", saleId);
+            values.put("region_id", regionId);
+            // Insert the new Sale_Detail record
+            long newSaleDetailId = db.insert("Sale_Details", null, values);
+            if (newSaleDetailId != -1) {
+                System.out.println("New Sale Detail added with ID: " + newSaleDetailId);
+            } else {
+                System.out.println("Failed to add a new Sale Detail.");
+            }
+        } else {
+            System.out.println("Rows Updated: " + rowsAffected);
+        }
+
+        // Close the database
+        db.close();
+    }
+    public void addSaleDetail(int saleId, int regionId, long amount) throws SQLException {
+        // Create a variable for the SQLite database and call the writable method
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        // Create a variable for the ContentValues
+        ContentValues values = new ContentValues();
+
+
+        // If checks passed, proceed with inserting the Sale Detail
+        values.put("sale_id", saleId);
+        values.put("region_id", regionId);
+        values.put("amount", amount);
+
+        // Insert into Sale_Details table
+        long newSaleDetailId = db.insert("Sale_Details", null, values);
+
+        // Close the cursors and database
+        db.close();
+
+        // Log or return the ID of the new Sale Detail record (cast to int)
+        // You can return the newSaleDetailId if you need to know the ID
+        System.out.println("New Sale Detail ID: " + newSaleDetailId);
+    }
+
+    public int addSale(int salespersonId, int year, int month) throws SQLException {
+        // Create a variable for the SQLite database and call the writable method
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        // Create a variable for the ContentValues
+        ContentValues values = new ContentValues();
+
+        // Format the date as needed (e.g., "YYYY-MM")
+        String date = year + "-" + month;
+
+        // Check if a sale for this salesperson and date already exists
+        String query = "SELECT * FROM Sales WHERE salesperson_id = ? AND date = ?";
+        Cursor cursor = db.rawQuery(query, new String[]{String.valueOf(salespersonId), date});
+
+        if (cursor != null && cursor.getCount() > 0) {
+            // If a record already exists, throw an error
+            cursor.close();
+            db.close();
+            throw new SQLException("Sale record for this salesperson and date already exists.");
+        }
+
+        // If no existing record found, proceed with inserting the new record
+        values.put("salesperson_id", salespersonId);
+        values.put("date", date);
+
+        // Insert the record into the Sales table and get the ID of the new record
+        long newRecordId = db.insert("Sales", null, values);
+
+        // Close the cursor and database
+        cursor.close();
+        db.close();
+
+        // Return the ID of the newly inserted record (cast to int)
+        return (int) newRecordId;
+    }
+
+    public List<SaleDetailModel> getSaleDetailsBySaleDate(int year, int month, int salespersonId) throws SQLException {
+        // Create a variable for the SQLite database and call the readable method
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        // Format the date filter as "YYYY-MM"
+        String dateFilter = year + "-" +  month;
+
+        // Define the query to retrieve sale details for the specified year, month, and salesperson
+        String query = "SELECT sd.id, sd.sale_id, sd.region_id, sd.amount " +
+                "FROM Sale_Details sd " +
+                "JOIN Sales s ON sd.sale_id = s.id " +
+                "WHERE s.salesperson_id = ? AND s.date LIKE ?";
+
+        // Execute the query
+        Cursor cursor = db.rawQuery(query, new String[]{String.valueOf(salespersonId), dateFilter + "%"});
+
+        // Create a list to hold SaleDetail objects
+        List<SaleDetailModel> saleDetails = new ArrayList<>();
+
+        // Iterate over the cursor and extract data
+        if (cursor != null && cursor.moveToFirst()) {
+            try {
+                do {
+                    int id = cursor.getInt(cursor.getColumnIndexOrThrow("id"));
+                    int saleId = cursor.getInt(cursor.getColumnIndexOrThrow("sale_id"));
+                    int regionId = cursor.getInt(cursor.getColumnIndexOrThrow("region_id"));
+                    long amount = cursor.getLong(cursor.getColumnIndexOrThrow("amount"));
+
+                    // Add the SaleDetail object to the list
+                    saleDetails.add(new SaleDetailModel(id, saleId, regionId, amount));
+                } while (cursor.moveToNext());
+            } finally {
+                // Close the cursor in a try-finally block
+                cursor.close();
+            }
+        }
+
+        // Close the database
+        db.close();
+
+        // Return the list of sale details
+        return saleDetails;
+    }
+
+
+
+    //region Salesperson
     public ArrayList<SalesPersonModel> getSalesPersons() {
         // on below line we are creating a
         // database for reading our database.
@@ -138,7 +336,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         return SalesPersonsArrayList;
     }
-
     public void addSalesperson(String name, String phoneNumber, int region, byte[] image) throws SQLException {
 
         // on below line we are creating a variable for
@@ -205,7 +402,46 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         // Close database
         db.close();
     }
+    //endregion
 
+    public void addOrUpdateCommission(int salespersonId, int month, int year, long amount) throws SQLException {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        // Check if the commission already exists for the given salesperson, month, and year
+        String query = "SELECT * FROM Commissions WHERE salesperson_id = ? AND month = ? AND year = ?";
+        Cursor cursor = db.rawQuery(query, new String[]{String.valueOf(salespersonId), String.valueOf(month), String.valueOf(year)});
+
+        if (cursor != null && cursor.moveToFirst()) {
+            // If a record exists, update the commission amount
+            ContentValues values = new ContentValues();
+            values.put("amount", amount);
+
+            // Define the where clause for updating the existing commission
+            String whereClause = "salesperson_id = ? AND month = ? AND year = ?";
+            String[] whereArgs = {String.valueOf(salespersonId), String.valueOf(month), String.valueOf(year)};
+
+            // Execute the update
+            db.update("Commissions", values, whereClause, whereArgs);
+            System.out.println("Commission updated for salesperson: " + salespersonId + ", month: " + month + ", year: " + year);
+        } else {
+            // If no record exists, insert a new commission record
+            ContentValues values = new ContentValues();
+            values.put("salesperson_id", salespersonId);
+            values.put("month", month);
+            values.put("year", year);
+            values.put("amount", amount);
+
+            // Insert the new commission record
+            db.insert("Commissions", null, values);
+            System.out.println("Commission added for salesperson: " + salespersonId + ", month: " + month + ", year: " + year);
+        }
+
+        // Close the cursor and the database
+        if (cursor != null) {
+            cursor.close();
+        }
+        db.close();
+    }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {

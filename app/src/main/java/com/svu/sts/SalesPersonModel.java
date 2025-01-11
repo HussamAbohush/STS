@@ -35,9 +35,7 @@ public class SalesPersonModel {
     public String getPhoneNumber() {
         return phoneNumber;
     }
-    public byte[] getImage(){
-        return Image;
-    }
+
     public Bitmap getImageBitmap() {
         return BitmapFactory.decodeByteArray(Image, 0, Image.length);
     }
@@ -55,14 +53,9 @@ public class SalesPersonModel {
         return b;
     }
 
-    public void setImage(byte[] image) {
-        this.Image = image;
-    }
+
     public void setName(String name) {
         this.name = name;
-    }
-    public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
     }
 
 }
