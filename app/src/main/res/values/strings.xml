@@ -58,4 +58,6 @@
     <string name="phone_number_">Phone Number:</string>
     <string name="main_location">Main Location:</string>
     <string name="_0_syp">0</string>
+    <string name="update">Update</string>
+    <string name="update_photo">Update Photo</string>
 </resources>

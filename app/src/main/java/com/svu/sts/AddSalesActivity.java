@@ -47,25 +47,27 @@ public class AddSalesActivity extends AppCompatActivity {
         DBHelper = new DatabaseHelper(AddSalesActivity.this);
 
         Bundle b = getIntent().getExtras();
-        p = new SalesPersonModel(b);
+        if (b != null) {
+            p = new SalesPersonModel(b);
+        }
         initViews();
         mainRegionID = DBHelper.getRegionIdByName(p.getMainLocation());
 
         sdl = DBHelper.getSaleDetailsBySaleDate(currentYear,currentMonth,p.getId());
         updateEditTextValues(sdl);
-        TVCommission.setText(String.valueOf( calculateCommission(p,sdl)));
+        TVCommission.setText(String.valueOf( calculateCommission(sdl)));
         NpMonth.setOnValueChangedListener((picker, oldVal, newVal) -> {
             currentMonth = NpMonth.getValue();
             sdl = DBHelper.getSaleDetailsBySaleDate(currentYear,currentMonth,p.getId());
             updateEditTextValues(sdl);
-            TVCommission.setText(String.valueOf( calculateCommission(p,sdl)));
+            TVCommission.setText(String.valueOf( calculateCommission(sdl)));
         });
 
         NpYear.setOnValueChangedListener((picker, oldVal, newVal) -> {
             currentYear = NpYear.getValue();
             sdl = DBHelper.getSaleDetailsBySaleDate(currentYear,currentMonth,p.getId());
             updateEditTextValues(sdl);
-            TVCommission.setText(String.valueOf( calculateCommission(p,sdl)));
+            TVCommission.setText(String.valueOf( calculateCommission(sdl)));
         });
         DialogInterface.OnClickListener dialogClickListener = (dialog, which) -> {
             switch (which){
@@ -74,7 +76,7 @@ public class AddSalesActivity extends AppCompatActivity {
                         updateSaleAndDetails(p);
                         Toast.makeText(getApplicationContext(),"updated",Toast.LENGTH_SHORT).show();
                         sdl = DBHelper.getSaleDetailsBySaleDate(currentYear,currentMonth,p.getId());
-                        calculateCommission(p,sdl);
+                        calculateCommission(sdl);
                         DBHelper.addOrUpdateCommission(p.getId(),currentMonth,currentYear,commission);
                         TVCommission.setText(String.valueOf( commission));
                     } catch (Exception e) {
@@ -90,7 +92,7 @@ public class AddSalesActivity extends AppCompatActivity {
             try{
                 addSaleAndDetails(p);
                 sdl = DBHelper.getSaleDetailsBySaleDate(currentYear,currentMonth,p.getId());
-                calculateCommission(p,sdl);
+                calculateCommission(sdl);
                 DBHelper.addOrUpdateCommission(p.getId(),currentMonth,currentYear,commission);
                 TVCommission.setText(String.valueOf( commission));
             }catch (Exception e){
@@ -160,7 +162,7 @@ public class AddSalesActivity extends AppCompatActivity {
         }
     }
 
-    private long calculateCommission(SalesPersonModel p,List<SaleDetailModel> sdl){
+    private long calculateCommission(List<SaleDetailModel> sdl){
         commission = 0 ;
     for (SaleDetailModel sdm:sdl) {
         long amount =sdm.getAmount();

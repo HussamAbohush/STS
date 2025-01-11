@@ -66,8 +66,8 @@ public class CreateOrEditSalesPersonActivity extends AppCompatActivity {
         if (b != null){
             p = new SalesPersonModel(b);
 
-            BSelectImage.setText("Update Photo");
-            BSave.setText("Update");
+            BSelectImage.setText(R.string.update_photo);
+            BSave.setText(R.string.update);
             BDelete.setVisibility(View.VISIBLE);
             ETName.setText(p.getName());
             ETPhoneNumber.setText(p.getPhoneNumber());

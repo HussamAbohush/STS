@@ -1,19 +1,16 @@
 package com.svu.sts;
 
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
+import android.annotation.SuppressLint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-
 import java.util.ArrayList;
 
 public class SalesPersonRVAdapter extends RecyclerView.Adapter<SalesPersonRVHolder>{
-    ArrayList<SalesPersonModel> dataList = new ArrayList<SalesPersonModel>();
-    private ItemClickListener itemListener;
+    ArrayList<SalesPersonModel> dataList;
+    private final ItemClickListener itemListener;
     public SalesPersonRVAdapter(ArrayList<SalesPersonModel> dataList, ItemClickListener itemListener){
         this.dataList = dataList;
         this.itemListener = itemListener;
@@ -23,10 +20,9 @@ public class SalesPersonRVAdapter extends RecyclerView.Adapter<SalesPersonRVHold
     public SalesPersonRVHolder onCreateViewHolder(@NonNull ViewGroup parent, int
             viewType) {
 
-        View v= LayoutInflater.from(parent.getContext()).inflate(R.layout.item_salesperson,null,
+        @SuppressLint("InflateParams") View v= LayoutInflater.from(parent.getContext()).inflate(R.layout.item_salesperson,null,
                 false);
-        SalesPersonRVHolder vh = new SalesPersonRVHolder(v);
-        return vh;
+        return new SalesPersonRVHolder(v);
     }
     @Override
     public void onBindViewHolder(@NonNull SalesPersonRVHolder holder, int position) {
@@ -41,14 +37,10 @@ public class SalesPersonRVAdapter extends RecyclerView.Adapter<SalesPersonRVHold
         holder.tv_Name.setText(dc.getName());
         holder.tv_Number.setText(dc.getPhoneNumber());
         holder.tv_MainLocation.setText(dc.getMainLocation());
-        holder.itemView.setOnClickListener(view ->{
-            itemListener.onItemClick(dc);
-        });
+        holder.itemView.setOnClickListener(view -> itemListener.onItemClick(dc));
 
     }
-    public static Bitmap getImage(byte[] image) {
-        return BitmapFactory.decodeByteArray(image, 0, image.length);
-    }
+
     @Override
     public int getItemCount() {
         return dataList.size();

@@ -5,11 +5,11 @@ import android.graphics.BitmapFactory;
 import android.os.Bundle;
 
 public class SalesPersonModel {
-    private  int id;
+    private final int id;
     private String name;
-    private String phoneNumber;
-    private String mainLocation;
-    private byte[] Image;
+    private final String phoneNumber;
+    private final String mainLocation;
+    private final byte[] Image;
 
     public SalesPersonModel(int id, String name, String phoneNumber, byte[] image, String mainLocation){
         this.id =id;

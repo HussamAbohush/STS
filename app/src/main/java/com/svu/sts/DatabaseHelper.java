@@ -121,7 +121,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         int regionId = -1; // Default value in case region is not found
 
         // Check if the cursor contains any data
-        if (cursor != null && cursor.moveToFirst()) {
+        if (cursor.moveToFirst()) {
             // Extract the regionId from the first row
             regionId = cursor.getInt(cursor.getColumnIndexOrThrow("id"));
         }
@@ -148,7 +148,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         Cursor cursor = db.rawQuery(query, new String[]{String.valueOf(salespersonId), dateFilter + "%"});
 
         int saleId = -1; // Default value if no sale is found
-        if (cursor != null && cursor.moveToFirst()) {
+        if (cursor.moveToFirst()) {
             try {
                 saleId = cursor.getInt(cursor.getColumnIndexOrThrow("id"));
             } finally {
@@ -234,7 +234,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         String query = "SELECT * FROM Sales WHERE salesperson_id = ? AND date = ?";
         Cursor cursor = db.rawQuery(query, new String[]{String.valueOf(salespersonId), date});
 
-        if (cursor != null && cursor.getCount() > 0) {
+        if (cursor.getCount() > 0) {
             // If a record already exists, throw an error
             cursor.close();
             db.close();
@@ -276,16 +276,15 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         List<SaleDetailModel> saleDetails = new ArrayList<>();
 
         // Iterate over the cursor and extract data
-        if (cursor != null && cursor.moveToFirst()) {
+        if (cursor.moveToFirst()) {
             try {
                 do {
                     int id = cursor.getInt(cursor.getColumnIndexOrThrow("id"));
-                    int saleId = cursor.getInt(cursor.getColumnIndexOrThrow("sale_id"));
                     int regionId = cursor.getInt(cursor.getColumnIndexOrThrow("region_id"));
                     long amount = cursor.getLong(cursor.getColumnIndexOrThrow("amount"));
 
                     // Add the SaleDetail object to the list
-                    saleDetails.add(new SaleDetailModel(id, saleId, regionId, amount));
+                    saleDetails.add(new SaleDetailModel(id, regionId, amount));
                 } while (cursor.moveToNext());
             } finally {
                 // Close the cursor in a try-finally block
@@ -411,7 +410,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         String query = "SELECT * FROM Commissions WHERE salesperson_id = ? AND month = ? AND year = ?";
         Cursor cursor = db.rawQuery(query, new String[]{String.valueOf(salespersonId), String.valueOf(month), String.valueOf(year)});
 
-        if (cursor != null && cursor.moveToFirst()) {
+        if (cursor.moveToFirst()) {
             // If a record exists, update the commission amount
             ContentValues values = new ContentValues();
             values.put("amount", amount);
@@ -437,9 +436,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
 
         // Close the cursor and the database
-        if (cursor != null) {
-            cursor.close();
-        }
+        cursor.close();
         db.close();
     }
 
