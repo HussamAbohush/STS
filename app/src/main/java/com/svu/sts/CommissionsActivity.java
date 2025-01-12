@@ -5,6 +5,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.NumberPicker;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -53,6 +54,10 @@ public class CommissionsActivity extends AppCompatActivity {
                 cml = DBHelper.getCommissionsByDate(fromYear,fromMonth,toYear,toMonth,p.getId());
                 long commissions = CalculateCommissions(cml);
                 TVCommission.setText(String.valueOf(commissions));
+
+            }else{
+                Toast.makeText(getApplicationContext(),"Error the first date should be equal or less than the second date"
+                ,Toast.LENGTH_SHORT).show();
             }
         });
 
