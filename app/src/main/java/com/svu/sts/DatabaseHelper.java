@@ -1,5 +1,6 @@
 package com.svu.sts;
 
+import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -304,7 +305,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getReadableDatabase();
 
         // Format the date range filters as "YYYY-MM"
+        @SuppressLint("DefaultLocale")
         String fromDate = String.format("%04d-%02d", fromYear, fromMonth);
+        @SuppressLint("DefaultLocale")
         String toDate = String.format("%04d-%02d", toYear, toMonth);
 
         // Define the query to retrieve commissions within the specified date range for the salesperson
@@ -323,13 +326,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             try {
                 do {
                     int id = cursor.getInt(cursor.getColumnIndexOrThrow("id"));
-                    int spId = cursor.getInt(cursor.getColumnIndexOrThrow("salesperson_id"));
-                    int month = cursor.getInt(cursor.getColumnIndexOrThrow("month"));
-                    int year = cursor.getInt(cursor.getColumnIndexOrThrow("year"));
                     long amount = cursor.getLong(cursor.getColumnIndexOrThrow("amount"));
 
                     // Add the CommissionModel object to the list
-                    commissions.add(new CommissionModel(id, spId, year, month, amount));
+                    commissions.add(new CommissionModel(id, amount));
                 } while (cursor.moveToNext());
             } finally {
                 // Close the cursor in a try-finally block

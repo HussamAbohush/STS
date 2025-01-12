@@ -2,16 +2,11 @@ package com.svu.sts;
 
 public class CommissionModel {
     private int id;
-    private int salespersonId;
-    private int year;
-    private int month;
-    private long amount;
+    private final long amount;
 
-    public CommissionModel(int id, int salespersonId, int year, int month, long amount) {
+    public CommissionModel(int id, long amount) {
         this.id = id;
-        this.salespersonId = salespersonId;
-        this.year = year;
-        this.month = month;
+
         this.amount = amount;
     }
 
