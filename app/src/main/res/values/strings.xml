@@ -60,4 +60,7 @@
     <string name="_0_syp">0</string>
     <string name="update">Update</string>
     <string name="update_photo">Update Photo</string>
+    <string name="commissions">Commissions</string>
+    <string name="calculate">Calculate</string>
+    <string name="choose_to_calculate_commissions">Choose to Calculate Commissions</string>
 </resources>

@@ -63,10 +63,15 @@
                     android:text="@string/salespersons" />
 
                 <Button
-                    android:id="@+id/btn_add_sales_record"
+                    android:id="@+id/btn_sales"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/btn_add_sales_record" />
+                <Button
+                    android:id="@+id/btn_commissions"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/commissions" />
 
 
             </LinearLayout>

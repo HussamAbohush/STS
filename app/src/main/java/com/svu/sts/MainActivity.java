@@ -12,7 +12,7 @@ import androidx.core.view.WindowInsetsCompat;
 
 public class MainActivity extends AppCompatActivity {
 
-    Button BAddSalesperson,BAddSales;
+    Button BAddSalesperson, BSales,BCommissions;
     DatabaseHelper db;
 
     @Override
@@ -28,14 +28,21 @@ public class MainActivity extends AppCompatActivity {
         db = new DatabaseHelper(MainActivity.this);
         db.init();
         BAddSalesperson = findViewById(R.id.addSalesperson);
-        BAddSales = findViewById(R.id.btn_add_sales_record);
+        BSales = findViewById(R.id.btn_sales);
+        BCommissions = findViewById(R.id.btn_commissions);
         BAddSalesperson.setOnClickListener(view -> {
             Intent intent = new Intent(getApplicationContext(), SalespersonsActivity.class);
             startActivity(intent);
 
         });
-        BAddSales.setOnClickListener(v ->{
+        BSales.setOnClickListener(v ->{
             Intent intent = new Intent(getApplicationContext(), ChooseSalespersonActivity.class);
+            intent.putExtra("Activity","Sales");
+            startActivity(intent);
+        });
+        BCommissions.setOnClickListener(v -> {
+            Intent intent = new Intent(getApplicationContext(), ChooseSalespersonActivity.class);
+            intent.putExtra("Activity","Commissions");
             startActivity(intent);
         });
 

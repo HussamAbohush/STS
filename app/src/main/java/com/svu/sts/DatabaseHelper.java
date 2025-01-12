@@ -299,6 +299,50 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return saleDetails;
     }
 
+    public List<CommissionModel> getCommissionsByDate(int fromYear, int fromMonth, int toYear, int toMonth, int salespersonId) throws SQLException {
+        // Create a variable for the SQLite database and call the readable method
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        // Format the date range filters as "YYYY-MM"
+        String fromDate = String.format("%04d-%02d", fromYear, fromMonth);
+        String toDate = String.format("%04d-%02d", toYear, toMonth);
+
+        // Define the query to retrieve commissions within the specified date range for the salesperson
+        String query = "SELECT id, salesperson_id, month, year, amount " +
+                "FROM Commissions " +
+                "WHERE salesperson_id = ? AND (year || '-' || printf('%02d', month)) BETWEEN ? AND ?";
+
+        // Execute the query
+        Cursor cursor = db.rawQuery(query, new String[]{String.valueOf(salespersonId), fromDate, toDate});
+
+        // Create a list to hold CommissionModel objects
+        List<CommissionModel> commissions = new ArrayList<>();
+
+        // Iterate over the cursor and extract data
+        if (cursor.moveToFirst()) {
+            try {
+                do {
+                    int id = cursor.getInt(cursor.getColumnIndexOrThrow("id"));
+                    int spId = cursor.getInt(cursor.getColumnIndexOrThrow("salesperson_id"));
+                    int month = cursor.getInt(cursor.getColumnIndexOrThrow("month"));
+                    int year = cursor.getInt(cursor.getColumnIndexOrThrow("year"));
+                    long amount = cursor.getLong(cursor.getColumnIndexOrThrow("amount"));
+
+                    // Add the CommissionModel object to the list
+                    commissions.add(new CommissionModel(id, spId, year, month, amount));
+                } while (cursor.moveToNext());
+            } finally {
+                // Close the cursor in a try-finally block
+                cursor.close();
+            }
+        }
+
+        // Close the database
+        db.close();
+
+        return commissions;
+    }
+
 
 
     //region Salesperson
