@@ -32,16 +32,17 @@ public class MainActivity extends AppCompatActivity {
         BCommissions = findViewById(R.id.btn_commissions);
         BAddSalesperson.setOnClickListener(view -> {
             Intent intent = new Intent(getApplicationContext(), SalespersonsActivity.class);
+            intent.putExtra("Activity","Salespersons");
             startActivity(intent);
 
         });
         BSales.setOnClickListener(v ->{
-            Intent intent = new Intent(getApplicationContext(), ChooseSalespersonActivity.class);
+            Intent intent = new Intent(getApplicationContext(), SalespersonsActivity.class);
             intent.putExtra("Activity","Sales");
             startActivity(intent);
         });
         BCommissions.setOnClickListener(v -> {
-            Intent intent = new Intent(getApplicationContext(), ChooseSalespersonActivity.class);
+            Intent intent = new Intent(getApplicationContext(), SalespersonsActivity.class);
             intent.putExtra("Activity","Commissions");
             startActivity(intent);
         });

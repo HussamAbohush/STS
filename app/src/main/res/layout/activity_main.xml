@@ -60,7 +60,7 @@
                     android:id="@+id/addSalesperson"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/salespersons" />
+                    android:text="@string/salespersons_" />
 
                 <Button
                     android:id="@+id/btn_sales"

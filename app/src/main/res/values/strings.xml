@@ -45,7 +45,7 @@
         vestibulum. Fusce dictum libero quis erat maximus, vitae volutpat diam dignissim.
     </string>
     <string name="add_salesperson_btn">Add Salesperson</string>
-    <string name="salespersons">SalesPersons</string>
+    <string name="salespersons">Choose to Edit SalePerson</string>
     <string name="phone_number">Phone Number</string>
     <string name="add_photo">Add Photo</string>
     <string name="delete">Delete</string>
@@ -63,4 +63,6 @@
     <string name="commissions">Commissions</string>
     <string name="calculate">Calculate</string>
     <string name="choose_to_calculate_commissions">Choose to Calculate Commissions</string>
+    <string name="choose_to_add_sales_record">Choose to Add Sales Record</string>
+    <string name="salespersons_">Salespersons</string>
 </resources>
