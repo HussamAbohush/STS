@@ -50,7 +50,7 @@ public class CommissionsActivity extends AppCompatActivity {
             int fromMonth = NpFromMonth.getValue();
             int toYear = NpToYear.getValue();
             int toMonth = NpToMonth.getValue();
-            if(fromYear <= toYear && fromMonth <= toMonth){
+            if(fromYear < toYear || (fromYear == toYear && fromMonth <= toMonth)){
                 cml = DBHelper.getCommissionsByDate(fromYear,fromMonth,toYear,toMonth,p.getId());
                 long commissions = CalculateCommissions(cml);
                 TVCommission.setText(String.valueOf(commissions));
