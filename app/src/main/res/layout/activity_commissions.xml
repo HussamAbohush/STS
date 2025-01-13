@@ -12,8 +12,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <!-- Your existing layout code goes here -->
-
         <LinearLayout
             android:id="@+id/linearLayout2"
             android:layout_width="0dp"
@@ -30,6 +28,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:layoutDirection="ltr"
                 android:orientation="horizontal">
 
                 <ImageView
@@ -60,6 +59,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:padding="5dp"
+                            android:textDirection="ltr"
                             android:textSize="16sp" />
 
                     </LinearLayout>
@@ -76,6 +76,7 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             android:padding="5dp"
+                            android:textDirection="ltr"
                             android:textSize="16sp" />
 
                     </LinearLayout>
@@ -92,6 +93,7 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             android:padding="5dp"
+                            android:textDirection="ltr"
                             android:textSize="16sp" />
 
                     </LinearLayout>
@@ -108,6 +110,7 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             android:padding="5dp"
+                            android:textDirection="ltr"
                             android:textSize="16sp" />
 
                     </LinearLayout>

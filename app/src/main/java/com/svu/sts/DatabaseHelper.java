@@ -305,15 +305,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getReadableDatabase();
 
         // Format the date range filters as "YYYY-MM"
-        @SuppressLint("DefaultLocale")
-        String fromDate = String.format("%04d-%02d", fromYear, fromMonth);
-        @SuppressLint("DefaultLocale")
-        String toDate = String.format("%04d-%02d", toYear, toMonth);
+        String fromDate =  fromYear + "-" +  fromMonth;
+        String toDate = toYear + "-" +  toMonth;
 
         // Define the query to retrieve commissions within the specified date range for the salesperson
         String query = "SELECT id, salesperson_id, month, year, amount " +
                 "FROM Commissions " +
-                "WHERE salesperson_id = ? AND (year || '-' || printf('%02d', month)) BETWEEN ? AND ?";
+                "WHERE salesperson_id = ? AND (year || '-' || printf('%01d', month)) BETWEEN ? AND ?";
 
         // Execute the query
         Cursor cursor = db.rawQuery(query, new String[]{String.valueOf(salespersonId), fromDate, toDate});
