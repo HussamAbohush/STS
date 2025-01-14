@@ -16,7 +16,7 @@
             android:name=".CommissionsActivity"
             android:exported="false" />
         <activity
-            android:name=".AddSalesActivity"
+            android:name=".SalesActivity"
             android:exported="false" />
         <activity
             android:name=".SalespersonsActivity"

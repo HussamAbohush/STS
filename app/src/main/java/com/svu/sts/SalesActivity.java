@@ -20,7 +20,7 @@ import java.util.List;
 import java.util.Locale;
 
 
-public class AddSalesActivity extends AppCompatActivity {
+public class SalesActivity extends AppCompatActivity {
 
     Button BSave;
     TextView TVId,TVName, TVPhoneNumber, TVRegion,TVCommission;
@@ -38,13 +38,13 @@ public class AddSalesActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-        setContentView(R.layout.activity_add_sales);
+        setContentView(R.layout.activity_sales);
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-        DBHelper = new DatabaseHelper(AddSalesActivity.this);
+        DBHelper = new DatabaseHelper(SalesActivity.this);
 
         Bundle b = getIntent().getExtras();
         if (b != null) {

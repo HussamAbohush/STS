@@ -59,7 +59,7 @@ public class SalespersonsActivity extends AppCompatActivity {
             TVTitle.setText(R.string.choose_to_add_sales_record);
             BtnAddSalesperson.setVisibility(View.INVISIBLE);
             ap = new SalesPersonRVAdapter(data, details -> {
-                Intent intent = new Intent(getApplicationContext(), AddSalesActivity.class);
+                Intent intent = new Intent(getApplicationContext(), SalesActivity.class);
                 intent.putExtras(details.getAsBundle());
                 startActivity(intent);
             });
