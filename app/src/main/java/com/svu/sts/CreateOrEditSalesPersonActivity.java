@@ -86,21 +86,25 @@ public class CreateOrEditSalesPersonActivity extends AppCompatActivity {
         BSave.setOnClickListener(v -> {
             String phoneNumber = ETPhoneNumber.getText().toString();
             String name = ETName.getText().toString();
-            int region = SRegions.getSelectedItemPosition()+1;
-            IVPreviewImage.buildDrawingCache();
-            Bitmap imageBitmap = IVPreviewImage.getDrawingCache();
-            byte[] image = getBitmapAsByteArray(imageBitmap);
-            if(b != null ) {
-                DBHelper.updateSalesperson(p.getId(), name, phoneNumber, region, image);
-                Toast.makeText(getApplicationContext(), "Salesperson \" "+name + " \" is Updated!",
+            if(phoneNumber.isEmpty() || name.isEmpty()){
+                Toast.makeText(getApplicationContext(), "Please fill all fields",
                         Toast.LENGTH_LONG).show();
+            }else {
+                int region = SRegions.getSelectedItemPosition() + 1;
+                IVPreviewImage.buildDrawingCache();
+                Bitmap imageBitmap = IVPreviewImage.getDrawingCache();
+                byte[] image = getBitmapAsByteArray(imageBitmap);
+                if (b != null) {
+                    DBHelper.updateSalesperson(p.getId(), name, phoneNumber, region, image);
+                    Toast.makeText(getApplicationContext(), "Salesperson \" " + name + " \" is Updated!",
+                            Toast.LENGTH_LONG).show();
+                } else {
+                    DBHelper.addSalesperson(name, phoneNumber, region, image);
+                    Toast.makeText(getApplicationContext(), "Salesperson \" " + name + " \" is Saved!",
+                            Toast.LENGTH_LONG).show();
+                }
+                CreateOrEditSalesPersonActivity.this.finish();
             }
-            else{
-                DBHelper.addSalesperson(name, phoneNumber, region, image);
-                Toast.makeText(getApplicationContext(), "Salesperson \" "+name + " \" is Saved!",
-                        Toast.LENGTH_LONG).show();
-            }
-            CreateOrEditSalesPersonActivity.this.finish();
         });
 
         DialogInterface.OnClickListener dialogClickListener = (dialog, which) -> {

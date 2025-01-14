@@ -12,8 +12,6 @@ tools:context=".CreateOrEditSalesPersonActivity">
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <!-- Your existing layout code goes here -->
-
     <LinearLayout
         android:id="@+id/linearLayout2"
         android:layout_width="0dp"
